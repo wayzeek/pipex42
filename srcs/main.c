@@ -6,13 +6,13 @@
 /*   By: vcart <vcart@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:01:05 by vcart             #+#    #+#             */
-/*   Updated: 2023/01/04 14:52:14 by vcart            ###   ########.fr       */
+/*   Updated: 2023/01/04 16:29:38 by vcart            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-int	exec_first_cmd(int	*fd, char **argv)
+int	exec_first_cmd(int	*fd, char **argv, char **envp)
 {
 	char	**args;
 	char	*path;
@@ -25,15 +25,15 @@ int	exec_first_cmd(int	*fd, char **argv)
 		return (-1);
 	if (ft_strncmp(args[0], "ls", 2) != 0)
 		args[count_words(argv[2], ' ')] = argv[1];
-	path = get_binary_path(args[0]);
+	path = get_binary_path(args[0], envp);
 	if (path == NULL)
 		return (-1);
-	if (execve(path, args, NULL) == -1)
+	if (execve(path, args, envp) == -1)
 		return (-1);
 	return (0);
 }
 
-int	exec_second_cmd(int	*fd, char **argv)
+int	exec_second_cmd(int	*fd, char **argv, char **envp)
 {
 	int		file;
 	char	*path;
@@ -48,15 +48,15 @@ int	exec_second_cmd(int	*fd, char **argv)
 	close(fd[1]);
 	close(file);
 	args = ft_split(argv[3], ' ');
-	path = get_binary_path(args[0]);
+	path = get_binary_path(args[0], envp);
 	if (path == NULL)
 		return (-1);
-	if (execve(path, args, NULL) == -1)
+	if (execve(path, args, envp) == -1)
 		return (-1);
 	return (0);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	int	fd[2];
 	int	pid1;
@@ -70,13 +70,13 @@ int	main(int argc, char **argv)
 	if (pid1 < 0)
 		return (-2);
 	if (pid1 == 0)
-		if (exec_first_cmd(fd, argv) == -1)
+		if (exec_first_cmd(fd, argv, envp) == -1)
 			return (-3);
 	pid2 = fork();
 	if (pid2 < 0)
 		return (-2);
 	if (pid2 == 0)
-		if (exec_second_cmd(fd, argv) == -1)
+		if (exec_second_cmd(fd, argv, envp) == -1)
 			return (-3);
 	close(fd[0]);
 	close(fd[1]);
