@@ -6,7 +6,7 @@
 /*   By: vcart <vcart@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 10:57:46 by vcart             #+#    #+#             */
-/*   Updated: 2023/01/04 15:01:39 by vcart            ###   ########.fr       */
+/*   Updated: 2023/01/05 11:22:04 by vcart            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	**ft_split(char const *s, char c)
 	{
 		i = 0;
 		words_nb = count_words((char *)s, c);
-		result = malloc(sizeof(char *) * (words_nb + 1));
+		result = malloc(sizeof(char *) * (words_nb + 2));
 		if (!result)
 			return (NULL);
 		while (i < words_nb)

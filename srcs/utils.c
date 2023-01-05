@@ -6,13 +6,11 @@
 /*   By: vcart <vcart@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 12:30:22 by vcart             #+#    #+#             */
-/*   Updated: 2023/01/04 16:55:41 by vcart            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:53:11 by vcart            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
-
-#include <stdio.h>
 
 char	**get_env_path(char **envp)
 {
@@ -32,6 +30,7 @@ char	*get_binary_path(char *cmd, char **envp)
 {
 	char	**path_list;
 	char	*path;
+	char	*result;
 	int		i;
 
 	path_list = get_env_path(envp);
@@ -39,9 +38,32 @@ char	*get_binary_path(char *cmd, char **envp)
 	while (path_list[i])
 	{
 		path = ft_strjoin(path_list[i], "/");
-		if (access(ft_strjoin(path, cmd), F_OK | X_OK) == 0)
-			return (ft_strjoin(path, cmd));
+		result = ft_strjoin(path, cmd);
+		free(path);
+		if (access(result, F_OK | X_OK) == 0)
+		{
+			while (path_list[i])
+			{
+				free(path_list[i]);
+				i++;
+			}
+			return (free(path_list), result);
+		}
+		free(path_list[i]);
 		i++;
 	}
 	return (0);
+}
+
+void	free_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
 }

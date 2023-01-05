@@ -19,6 +19,7 @@ clean:
 		${RM} ${OBJS} output.txt
 
 fclean:	clean
+		make fclean -C ./libft
 		${RM} ${NAME}
 
 re:		fclean

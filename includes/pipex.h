@@ -6,7 +6,7 @@
 /*   By: vcart <vcart@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 13:52:13 by vcart             #+#    #+#             */
-/*   Updated: 2023/01/04 16:28:04 by vcart            ###   ########.fr       */
+/*   Updated: 2023/01/05 14:50:26 by vcart            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@
 # include <errno.h>
 
 char	*get_binary_path(char *cmd, char **envp);
+void	free_args(char **args);
 
 #endif

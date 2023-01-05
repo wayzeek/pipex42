@@ -6,7 +6,7 @@
 /*   By: vcart <vcart@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:01:05 by vcart             #+#    #+#             */
-/*   Updated: 2023/01/04 16:29:38 by vcart            ###   ########.fr       */
+/*   Updated: 2023/01/05 15:51:56 by vcart            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,18 @@ int	exec_first_cmd(int	*fd, char **argv, char **envp)
 	close(fd[1]);
 	args = ft_split(argv[2], ' ');
 	if (access(argv[1], F_OK | R_OK) == -1)
-		return (-1);
+		return (free_args(args), -1);
 	if (ft_strncmp(args[0], "ls", 2) != 0)
+	{
 		args[count_words(argv[2], ' ')] = argv[1];
+		args[count_words(argv[2], ' ') + 1] = 0;
+	}
 	path = get_binary_path(args[0], envp);
 	if (path == NULL)
 		return (-1);
-	if (execve(path, args, envp) == -1)
-		return (-1);
-	return (0);
+	execve(path, args, envp);
+	free_args(args);
+	return (free(path), -1);
 }
 
 int	exec_second_cmd(int	*fd, char **argv, char **envp)
@@ -51,9 +54,9 @@ int	exec_second_cmd(int	*fd, char **argv, char **envp)
 	path = get_binary_path(args[0], envp);
 	if (path == NULL)
 		return (-1);
-	if (execve(path, args, envp) == -1)
-		return (-1);
-	return (0);
+	execve(path, args, envp);
+	free_args(args);
+	return (free(path), -1);
 }
 
 int	main(int argc, char **argv, char **envp)
